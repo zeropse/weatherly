@@ -1,13 +1,20 @@
-import { ThemeToggler } from "@/style/theme-toggle";
 import { ThemeProvider } from "@/style/theme-provider";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "@/pages/Home";
+import NotFound from "@/pages/NotFound";
+import Layout from "@/layout/Layout";
 
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="flex h-screen w-screen items-center justify-center">
-        <h1 className="text-4xl font-bold">Hello, Weatherly!</h1>
-        <ThemeToggler />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
