@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconX } from "@tabler/icons-react";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,6 +67,13 @@ export default function Home() {
     }
   }
 
+  function handleClear() {
+    setCity("");
+    setSearchedWeather(null);
+    setSearchError("");
+    setSearchParams({});
+  }
+
   return (
     <div className="mx-auto max-w-4xl space-y-10 p-16">
       <section className="w-full">
@@ -103,9 +110,22 @@ export default function Home() {
                     value={city}
                     onChange={(event) => setCity(event.target.value)}
                     placeholder="e.g. London, Tokyo, New York"
-                    className="h-11 pl-10"
+                    className="h-11 pr-10 pl-10"
                     aria-label="City name"
                   />
+
+                  {city && (
+                    <Button
+                      type="button"
+                      onClick={handleClear}
+                      variant="destructive"
+                      size="icon-xs"
+                      className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
+                      aria-label="Clear city search"
+                    >
+                      <IconX className="size-4" />
+                    </Button>
+                  )}
                 </div>
 
                 <Button
