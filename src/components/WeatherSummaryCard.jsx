@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export function WeatherSummaryCard({ weather }) {
   return (
-    <Card className="border bg-card shadow-sm rounded-xl">
+    <Card className="border shadow-sm rounded-xl">
       <CardContent className="p-6 md:p-8">
         {/* Top Section */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">

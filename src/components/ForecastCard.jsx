@@ -27,8 +27,8 @@ export function ForecastCard({ forecast }) {
   }
 
   return (
-    <Card className="overflow-hidden border bg-card shadow-sm">
-      <CardHeader className="border-b p-3">
+    <Card className="overflow-hidden border shadow-sm">
+      <CardHeader className="border-b">
         <div className="grid gap-2 md:grid-cols-5">
           {forecast.days.map((day) => {
             const isActive = activeDay.dateKey === day.dateKey;
@@ -68,12 +68,12 @@ export function ForecastCard({ forecast }) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6 p-6">
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <CardContent className="space-y-6 p-3">
+        <div className="grid gap-3 md:grid-cols-2">
           {activeDay.entries.map((entry) => (
             <div
               key={entry.timestamp}
-              className="rounded-2xl border bg-card p-4 shadow-sm transition-colors hover:bg-muted/20"
+              className="rounded-2xl border p-4 shadow-sm transition-colors hover:bg-muted/20"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>

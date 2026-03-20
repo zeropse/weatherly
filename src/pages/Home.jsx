@@ -68,7 +68,7 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-10 px-5 py-20">
+    <div className="mx-auto max-w-4xl space-y-10 p-16">
       <section className="w-full">
         <div className="space-y-10">
           {/* Hero */}
@@ -82,7 +82,7 @@ export default function Home() {
           </div>
 
           {/* Search Card */}
-          <Card className="border bg-card shadow-sm">
+          <Card className="border shadow-sm">
             <CardHeader>
               <CardTitle className="text-lg font-semibold">
                 Search City

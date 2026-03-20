@@ -92,7 +92,7 @@ const About = () => {
   return (
     <section className="flex-1 flex flex-col items-center justify-center min-h-[70vh] py-12 px-4 md:px-6">
       <div className="w-full max-w-5xl mx-auto">
-        <Card className="w-full border-none shadow-none bg-transparent md:border md:shadow-sm md:bg-card">
+        <Card className="w-full border-none shadow-none bg-transparent md:border md:shadow-sm">
           <CardHeader>
             <CardTitle className="text-4xl md:text-5xl font-extrabold text-center drop-shadow-sm">
               About
