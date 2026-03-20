@@ -1,48 +1,3 @@
-const FEATURED_CITIES = [
-  {
-    name: "New York",
-    country: "United States",
-    latitude: 40.7128,
-    longitude: -74.006,
-    timezone: "America/New_York",
-  },
-  {
-    name: "London",
-    country: "United Kingdom",
-    latitude: 51.5072,
-    longitude: -0.1276,
-    timezone: "Europe/London",
-  },
-  {
-    name: "Tokyo",
-    country: "Japan",
-    latitude: 35.6762,
-    longitude: 139.6503,
-    timezone: "Asia/Tokyo",
-  },
-  {
-    name: "Dubai",
-    country: "United Arab Emirates",
-    latitude: 25.2048,
-    longitude: 55.2708,
-    timezone: "Asia/Dubai",
-  },
-  {
-    name: "Paris",
-    country: "France",
-    latitude: 48.8566,
-    longitude: 2.3522,
-    timezone: "Europe/Paris",
-  },
-  {
-    name: "Sydney",
-    country: "Australia",
-    latitude: -33.8688,
-    longitude: 151.2093,
-    timezone: "Australia/Sydney",
-  },
-];
-
 const WEATHER_CODE_LABELS = {
   0: "Clear",
   1: "Mainly Clear",
@@ -189,8 +144,4 @@ async function getCityWeather(city) {
   return fetchWeatherForLocation(location);
 }
 
-async function getFeaturedCitiesWeather() {
-  return Promise.all(FEATURED_CITIES.map(fetchWeatherForLocation));
-}
-
-export { WeatherApiError, getCityWeather, getFeaturedCitiesWeather };
+export { WeatherApiError, getCityWeather };

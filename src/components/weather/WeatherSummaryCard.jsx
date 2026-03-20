@@ -1,49 +1,96 @@
+import {
+  IconDroplets,
+  IconWind,
+  IconMapPin,
+  IconTemperaturePlus,
+  IconTemperatureMinus,
+  IconClock,
+} from "@tabler/icons-react";
+import { Card, CardContent } from "@/components/ui/card";
+
 export function WeatherSummaryCard({ weather }) {
   return (
-    <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="text-sm text-muted-foreground">Latest result</div>
-          <div className="mt-1 text-xl font-semibold">
-            {weather.city}, {weather.country}
+    <Card className="border bg-card shadow-sm rounded-xl">
+      <CardContent className="p-6 md:p-8">
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
+          {/* Location + Condition */}
+          <div className="text-center md:text-left space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-muted text-muted-foreground text-xs font-medium">
+              <IconMapPin className="size-3.5 text-primary" />
+              {weather.city}, {weather.country}
+            </div>
+
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                {weather.condition}
+              </h2>
+
+              <p className="text-muted-foreground text-sm mt-1">
+                Feels like{" "}
+                <span className="text-foreground font-medium">
+                  {weather.apparentTemperature}°
+                </span>
+              </p>
+            </div>
           </div>
-          <div className="mt-2 text-sm text-muted-foreground">
-            {weather.condition} • Feels like {weather.apparentTemperature}°C
+
+          {/* Temperature */}
+          <div className="flex flex-col items-center md:items-end">
+            <span className="text-6xl md:text-7xl font-bold tracking-tight text-foreground">
+              {weather.temperature}°
+            </span>
+
+            <div className="flex gap-2 mt-3">
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted text-xs font-medium">
+                <IconTemperaturePlus className="size-3.5 text-primary" />
+                {weather.high}°
+              </div>
+
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted text-xs font-medium">
+                <IconTemperatureMinus className="size-3.5 text-primary" />
+                {weather.low}°
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="text-right">
-          <div className="text-4xl font-semibold tracking-tight">
-            {weather.temperature}°C
-          </div>
-          <div className="text-sm text-muted-foreground">
-            H:{weather.high}°C / L:{weather.low}°C
-          </div>
-        </div>
-      </div>
+        {/* Divider */}
+        <div className="my-6 h-px bg-border" />
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-lg bg-background/80 p-3 ring-1 ring-border/60">
-          <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Humidity
+        {/* Bottom Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconDroplets className="size-4 text-primary" />
+              Humidity
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.humidity}%
+            </span>
           </div>
-          <div className="mt-2 text-lg font-medium">{weather.humidity}%</div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconWind className="size-4 text-primary" />
+              Wind
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.windSpeed} km/h
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconClock className="size-4 text-primary" />
+              Timezone
+            </div>
+            <span className="font-medium text-foreground truncate">
+              {weather.timezone}
+            </span>
+          </div>
         </div>
-        <div className="rounded-lg bg-background/80 p-3 ring-1 ring-border/60">
-          <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Wind
-          </div>
-          <div className="mt-2 text-lg font-medium">
-            {weather.windSpeed} km/h
-          </div>
-        </div>
-        <div className="rounded-lg bg-background/80 p-3 ring-1 ring-border/60">
-          <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Timezone
-          </div>
-          <div className="mt-2 text-sm font-medium">{weather.timezone}</div>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

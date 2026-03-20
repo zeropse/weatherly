@@ -22,10 +22,6 @@ async function callWeatherApi(params) {
   return payload;
 }
 
-export function fetchFeaturedCitiesWeather() {
-  return callWeatherApi({ featured: "true" });
-}
-
 export function fetchCityWeather(city) {
   return callWeatherApi({ city });
 }

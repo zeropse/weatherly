@@ -98,7 +98,7 @@ const About = () => {
               {/* CTA */}
               <Button
                 variant="outline"
-                className="flex items-center gap-2 shrink-0"
+                className="flex items-center gap-2 shrink-0 cursor-pointer"
                 onClick={() =>
                   window.open("https://github.com/zeropse/weatherly", "_blank")
                 }

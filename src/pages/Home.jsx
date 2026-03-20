@@ -1,47 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SearchWeatherSection } from "@/components/weather/SearchWeatherSection";
-import { FeaturedCitiesSection } from "@/components/weather/FeaturedCitiesSection";
-import { fetchCityWeather, fetchFeaturedCitiesWeather } from "@/lib/weather";
+import { fetchCityWeather } from "@/lib/weather";
 
 export default function Home() {
   const [city, setCity] = useState("");
   const [searchedWeather, setSearchedWeather] = useState(null);
   const [searchError, setSearchError] = useState("");
-  const [featuredCities, setFeaturedCities] = useState([]);
-  const [featuredError, setFeaturedError] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [isFeaturedLoading, setIsFeaturedLoading] = useState(true);
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function loadFeaturedCities() {
-      try {
-        setIsFeaturedLoading(true);
-        setFeaturedError("");
-
-        const payload = await fetchFeaturedCitiesWeather();
-
-        if (!ignore) {
-          setFeaturedCities(payload.cities ?? []);
-        }
-      } catch (error) {
-        if (!ignore) {
-          setFeaturedError(error.message);
-        }
-      } finally {
-        if (!ignore) {
-          setIsFeaturedLoading(false);
-        }
-      }
-    }
-
-    loadFeaturedCities();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -68,7 +33,7 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-10 px-5 py-10">
+    <div className="mx-auto max-w-4xl space-y-10 px-5 py-20">
       <SearchWeatherSection
         city={city}
         isSearching={isSearching}
@@ -76,12 +41,6 @@ export default function Home() {
         onSubmit={handleSubmit}
         searchError={searchError}
         searchedWeather={searchedWeather}
-      />
-
-      <FeaturedCitiesSection
-        featuredCities={featuredCities}
-        featuredError={featuredError}
-        isFeaturedLoading={isFeaturedLoading}
       />
     </div>
   );

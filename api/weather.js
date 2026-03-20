@@ -1,8 +1,4 @@
-import {
-  WeatherApiError,
-  getCityWeather,
-  getFeaturedCitiesWeather,
-} from "./_weather.js";
+import { WeatherApiError, getCityWeather } from "./_weather.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -10,18 +6,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    if (req.query.featured === "true") {
-      const cities = await getFeaturedCitiesWeather();
-      return res.status(200).json({ cities });
-    }
-
     if (typeof req.query.city === "string" && req.query.city.trim()) {
       const weather = await getCityWeather(req.query.city.trim());
       return res.status(200).json({ weather });
     }
 
     return res.status(400).json({
-      error: "Pass either ?featured=true or ?city=<name>.",
+      error: "Pass ?city=<name>.",
     });
   } catch (error) {
     if (error instanceof WeatherApiError) {
