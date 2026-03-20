@@ -1,12 +1,13 @@
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import weatherHandler from "./api/weather.js";
+import { defineConfig, loadEnv } from "vite";
+import { getCityWeather, WeatherApiError } from "./src/lib/weather-service.js";
+import process from "process";
 
 const __dirname = path.resolve();
 
-function vercelApiDevPlugin() {
+function vercelApiDevPlugin(env) {
   return {
     name: "vercel-api-dev-plugin",
     configureServer(server) {
@@ -32,14 +33,19 @@ function vercelApiDevPlugin() {
         };
 
         try {
-          await weatherHandler(
-            {
-              method: req.method,
-              query,
-            },
-            apiRes,
-          );
+          const city = query.city?.trim();
+          if (!city) {
+            apiRes.status(400).json({ error: "Pass ?city=<name> parameter." });
+            return;
+          }
+
+          const weather = await getCityWeather(city, env);
+          apiRes.status(200).json({ weather });
         } catch (error) {
+          if (error instanceof WeatherApiError) {
+            apiRes.status(error.status).json({ error: error.message });
+            return;
+          }
           res.statusCode = 500;
           res.setHeader("Content-Type", "application/json");
           res.end(
@@ -57,14 +63,18 @@ function vercelApiDevPlugin() {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss(), vercelApiDevPlugin()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
+  return {
+    plugins: [react(), tailwindcss(), vercelApiDevPlugin(env)],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
-  server: {
-    port: 3000,
-  },
+    server: {
+      port: 3000,
+    },
+  };
 });

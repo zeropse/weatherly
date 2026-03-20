@@ -17,7 +17,7 @@ import { IconSearch } from "@tabler/icons-react";
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryCity = searchParams.get("city");
-  const [city, setCity] = useState(queryCity);
+  const [city, setCity] = useState(queryCity || "");
   const [searchedWeather, setSearchedWeather] = useState(null);
   const [searchError, setSearchError] = useState("");
   const [isSearching, setIsSearching] = useState(false);

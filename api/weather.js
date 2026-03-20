@@ -1,4 +1,4 @@
-import { WeatherApiError, getCityWeather } from "./_weather.js";
+import { getCityWeather, WeatherApiError } from "../src/lib/weather-service.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,19 +6,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    if (typeof req.query.city === "string" && req.query.city.trim()) {
-      const weather = await getCityWeather(req.query.city.trim());
-      return res.status(200).json({ weather });
+    const city = req.query.city?.trim();
+    if (!city) {
+      return res.status(400).json({ error: "Pass ?city=<name> parameter." });
     }
 
-    return res.status(400).json({
-      error: "Pass ?city=<name>.",
-    });
+    const weather = await getCityWeather(city, req.env || process.env);
+    return res.status(200).json({ weather });
   } catch (error) {
     if (error instanceof WeatherApiError) {
       return res.status(error.status).json({ error: error.message });
     }
-
+    console.error("OpenWeather API error:", error);
     return res.status(500).json({ error: "Unexpected server error." });
   }
 }
