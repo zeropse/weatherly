@@ -20,69 +20,76 @@ export function SearchWeatherSection({
   searchedWeather,
 }) {
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
-          Weatherly
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Get real-time weather updates for any city around the globe with
-          precision and style.
-        </p>
-      </div>
-
-      <Card className="border-none shadow-xl bg-card/50 backdrop-blur-sm overflow-hidden">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-semibold">Search City</CardTitle>
-          <CardDescription>Enter a city name to get started.</CardDescription>
-        </CardHeader>
-
-        <CardContent className="space-y-6">
-          <form
-            className="relative flex flex-col gap-3 sm:flex-row"
-            onSubmit={onSubmit}
-          >
-            <div className="relative flex-1">
-              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <Input
-                value={city}
-                onChange={onCityChange}
-                placeholder="e.g. London, Tokyo, New York"
-                className="h-12 pl-10 rounded-xl bg-background/50 border-input transition-all focus:ring-2 focus:ring-primary/20"
-                aria-label="City name"
-              />
-            </div>
-            <Button
-              type="submit"
-              size="lg"
-              className="h-12 px-8 rounded-xl font-medium transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-              disabled={isSearching}
-            >
-              {isSearching ? (
-                <>
-                  <Spinner className="size-4" />
-                  Searching...
-                </>
-              ) : (
-                "Search Weather"
-              )}
-            </Button>
-          </form>
-
-          {searchError && (
-            <div className="animate-in fade-in slide-in-from-top-2 duration-300 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive flex items-center gap-2">
-              <span className="shrink-0 size-1.5 rounded-full bg-destructive" />
-              {searchError}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {searchedWeather && (
-        <div className="animate-in fade-in zoom-in-95 duration-500">
-          <WeatherSummaryCard weather={searchedWeather} />
+    <section className="w-full py-12 md:py-16">
+      <div className="mx-auto max-w-4xl px-4 space-y-10">
+        {/* Hero */}
+        <div className="text-center space-y-3">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+            Weatherly
+          </h1>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+            Get real-time weather updates for any city around the globe.
+          </p>
         </div>
-      )}
-    </div>
+
+        {/* Search Card */}
+        <Card className="border bg-card shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Search City</CardTitle>
+            <CardDescription>
+              Enter a city name to get weather details.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <form
+              onSubmit={onSubmit}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <div className="relative flex-1">
+                <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input
+                  value={city}
+                  onChange={onCityChange}
+                  placeholder="e.g. London, Tokyo, New York"
+                  className="h-11 pl-10"
+                  aria-label="City name"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                size="default"
+                className="h-11 px-6 font-medium cursor-pointer"
+                disabled={isSearching}
+              >
+                {isSearching ? (
+                  <div className="flex items-center gap-2">
+                    <Spinner className="size-4" />
+                    Searching
+                  </div>
+                ) : (
+                  "Search"
+                )}
+              </Button>
+            </form>
+
+            {/* Error */}
+            {searchError && (
+              <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {searchError}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Result */}
+        {searchedWeather && (
+          <div className="animate-in fade-in duration-300">
+            <WeatherSummaryCard weather={searchedWeather} />
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
