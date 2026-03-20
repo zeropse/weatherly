@@ -54,6 +54,7 @@ export default function Home() {
       setSearchedWeather(null);
       setSearchError("");
     }
+    document.title = "Weatherly - Real-time Weather Updates";
   }, [queryCity, handleSearch]);
 
   async function handleSubmit(event) {

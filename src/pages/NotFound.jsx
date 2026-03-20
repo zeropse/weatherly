@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { IconHome } from "@tabler/icons-react";
+import { useEffect } from "react";
 
 export default function NotFound() {
+  useEffect(() => {
+    document.title = "404 Not Found - Weatherly";
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="space-y-3 text-center">
