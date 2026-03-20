@@ -94,12 +94,9 @@ export async function fetchCurrentWeather(location, envVar = process.env) {
     windSpeed: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
     humidity: data.main.humidity,
     condition: data.weather[0]?.main || "Unknown",
-    description: data.weather[0]?.description || "",
-    icon: data.weather[0]?.icon,
     high: Math.round(data.main.temp_max),
     low: Math.round(data.main.temp_min),
     timezone: `UTC${data.timezone >= 0 ? "+" : ""}${data.timezone / 3600}`,
-    fetchedAt: new Date().toISOString(),
   };
 }
 

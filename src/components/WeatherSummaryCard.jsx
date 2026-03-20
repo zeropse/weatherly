@@ -43,11 +43,13 @@ export function WeatherSummaryCard({ weather }) {
 
             <div className="flex gap-2 mt-3">
               <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted text-xs font-medium">
+                Highest
                 <IconTemperaturePlus className="size-3.5 text-primary" />
                 {weather.high}°
               </div>
 
               <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted text-xs font-medium">
+                Lowest
                 <IconTemperatureMinus className="size-3.5 text-primary" />
                 {weather.low}°
               </div>
