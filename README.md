@@ -1,5 +1,7 @@
 # Weatherly
 
+![Weatherly Dashboard Screenshot](/public/og-image.png)
+
 Weatherly is a modern weather dashboard built with React and Vite. It lets users search for any city and view current conditions alongside a 5-day forecast broken into 3-hour intervals.
 
 The app uses an internal serverless API route to keep the OpenWeather API key on the server side while the frontend talks to a simple `/api/weather` endpoint.
