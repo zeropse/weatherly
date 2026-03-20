@@ -1,3 +1,4 @@
+import process from "process";
 import { getCityWeather, WeatherApiError } from "../src/lib/weather-service.js";
 
 export default async function handler(req, res) {

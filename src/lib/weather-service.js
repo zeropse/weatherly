@@ -29,6 +29,26 @@ async function fetchJson(url) {
   return response.json();
 }
 
+function formatUtcOffset(offsetInSeconds) {
+  const offsetInHours = offsetInSeconds / 3600;
+  const formattedOffset = Number.isInteger(offsetInHours)
+    ? offsetInHours.toString()
+    : offsetInHours.toFixed(1).replace(/\.0$/, "");
+
+  return `UTC${offsetInHours >= 0 ? "+" : ""}${formattedOffset}`;
+}
+
+function getLocalDate(timestampInSeconds, timezoneOffsetInSeconds) {
+  return new Date((timestampInSeconds + timezoneOffsetInSeconds) * 1000);
+}
+
+function formatLocalDate(timestampInSeconds, timezoneOffsetInSeconds, options) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    ...options,
+  }).format(getLocalDate(timestampInSeconds, timezoneOffsetInSeconds));
+}
+
 /**
  * Find city coordinates using OpenWeather Geocoding API
  */
@@ -96,11 +116,127 @@ export async function fetchCurrentWeather(location, envVar = process.env) {
     condition: data.weather[0]?.main || "Unknown",
     high: Math.round(data.main.temp_max),
     low: Math.round(data.main.temp_min),
-    timezone: `UTC${data.timezone >= 0 ? "+" : ""}${data.timezone / 3600}`,
+    timezone: formatUtcOffset(data.timezone),
+  };
+}
+
+export async function fetchFiveDayForecast(location, envVar = process.env) {
+  const apiKey = envVar.OPEN_WEATHER_API_KEY;
+  if (!apiKey) {
+    throw new WeatherApiError(
+      "Weather service configuration error (missing key).",
+      500,
+    );
+  }
+
+  const url = new URL(`${BASE_URL}/forecast`);
+  url.searchParams.set("lat", location.latitude);
+  url.searchParams.set("lon", location.longitude);
+  url.searchParams.set("units", "metric");
+  url.searchParams.set("appid", apiKey);
+
+  const data = await fetchJson(url.toString());
+  const timezoneOffset = data.city?.timezone ?? 0;
+
+  const entries = (data.list ?? []).map((item) => {
+    const weather = item.weather?.[0] ?? {};
+
+    return {
+      timestamp: item.dt,
+      dateKey: formatLocalDate(item.dt, timezoneOffset, {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      dayLabel: formatLocalDate(item.dt, timezoneOffset, {
+        weekday: "short",
+      }),
+      dateLabel: formatLocalDate(item.dt, timezoneOffset, {
+        month: "short",
+        day: "numeric",
+      }),
+      hourLabel: formatLocalDate(item.dt, timezoneOffset, {
+        hour: "numeric",
+      }),
+      temperature: Math.round(item.main.temp),
+      feelsLike: Math.round(item.main.feels_like),
+      humidity: item.main.humidity,
+      windSpeed: Math.round((item.wind?.speed ?? 0) * 3.6),
+      precipitationChance: Math.round((item.pop ?? 0) * 100),
+      rainVolume: Number((item.rain?.["3h"] ?? 0).toFixed(1)),
+      snowVolume: Number((item.snow?.["3h"] ?? 0).toFixed(1)),
+      condition: weather.main || "Unknown",
+      description: weather.description || "No details",
+      period: item.sys?.pod || "d",
+      tempHigh: Math.round(item.main.temp_max),
+      tempLow: Math.round(item.main.temp_min),
+    };
+  });
+
+  const dayMap = new Map();
+  entries.forEach((entry) => {
+    const existingDay = dayMap.get(entry.dateKey);
+
+    if (!existingDay) {
+      dayMap.set(entry.dateKey, {
+        dateKey: entry.dateKey,
+        dayLabel: entry.dayLabel,
+        dateLabel: entry.dateLabel,
+        high: entry.tempHigh,
+        low: entry.tempLow,
+        condition: entry.condition,
+        entries: [
+          {
+            timestamp: entry.timestamp,
+            hourLabel: entry.hourLabel,
+            description: entry.description,
+            temperature: entry.temperature,
+            feelsLike: entry.feelsLike,
+            humidity: entry.humidity,
+            windSpeed: entry.windSpeed,
+            precipitationChance: entry.precipitationChance,
+            rainVolume: entry.rainVolume,
+            snowVolume: entry.snowVolume,
+          },
+        ],
+      });
+      return;
+    }
+
+    existingDay.high = Math.max(existingDay.high, entry.tempHigh);
+    existingDay.low = Math.min(existingDay.low, entry.tempLow);
+    existingDay.entries.push({
+      timestamp: entry.timestamp,
+      hourLabel: entry.hourLabel,
+      description: entry.description,
+      temperature: entry.temperature,
+      feelsLike: entry.feelsLike,
+      humidity: entry.humidity,
+      windSpeed: entry.windSpeed,
+      precipitationChance: entry.precipitationChance,
+      rainVolume: entry.rainVolume,
+      snowVolume: entry.snowVolume,
+    });
+
+    if (entry.period === "d") {
+      existingDay.condition = entry.condition;
+    }
+  });
+
+  return {
+    days: Array.from(dayMap.values()).slice(0, 5),
   };
 }
 
 export async function getCityWeather(city, envVar = process.env) {
   const location = await findLocationByCity(city, envVar);
-  return fetchCurrentWeather(location, envVar);
+  const [current, forecast] = await Promise.all([
+    fetchCurrentWeather(location, envVar),
+    fetchFiveDayForecast(location, envVar),
+  ]);
+
+  return {
+    current,
+    forecast,
+  };
 }

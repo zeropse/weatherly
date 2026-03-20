@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchCityWeather } from "@/lib/weather";
 import { WeatherSummaryCard } from "@/components/WeatherSummaryCard";
+import { ForecastCard } from "@/components/ForecastCard";
 import {
   Card,
   CardContent,
@@ -127,9 +128,12 @@ export default function Home() {
           </Card>
 
           {/* Result */}
-          {searchedWeather && (
-            <div className="animate-in fade-in duration-300">
-              <WeatherSummaryCard weather={searchedWeather} />
+          {searchedWeather?.current && (
+            <div className="space-y-6 animate-in fade-in duration-300">
+              <WeatherSummaryCard weather={searchedWeather.current} />
+              {searchedWeather.forecast && (
+                <ForecastCard forecast={searchedWeather.forecast} />
+              )}
             </div>
           )}
         </div>
