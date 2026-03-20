@@ -1,17 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SearchWeatherSection } from "@/components/weather/SearchWeatherSection";
 import { fetchCityWeather } from "@/lib/weather";
 
 export default function Home() {
-  const [city, setCity] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryCity = searchParams.get("city");
+  const [city, setCity] = useState(queryCity);
   const [searchedWeather, setSearchedWeather] = useState(null);
   const [searchError, setSearchError] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  useEffect(() => {
+    if (queryCity) {
+      setCity(queryCity);
+      handleSearch(queryCity);
+    } else {
+      setCity("");
+      setSearchedWeather(null);
+      setSearchError("");
+    }
+  }, [queryCity]);
 
-    const nextCity = city.trim();
+  async function handleSearch(cityName) {
+    const nextCity = cityName.trim();
 
     if (!nextCity) {
       setSearchError("Enter a city name to search.");
@@ -29,6 +41,17 @@ export default function Home() {
       setSearchError(error.message);
     } finally {
       setIsSearching(false);
+    }
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const nextCity = city.trim();
+
+    if (nextCity) {
+      setSearchParams({ city: nextCity });
+    } else {
+      setSearchError("Enter a city name to search.");
     }
   }
 
