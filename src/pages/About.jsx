@@ -34,8 +34,7 @@ const faqData = [
   },
   {
     question: "Can I save my favorite cities?",
-    answer:
-      "Currently, you can search for any city worldwide. We are have a selection of popular cities available for quick access, but we do not yet support saving favorites. This is a feature we are considering for future updates based on user feedback.",
+    answer: "Currently, you can search for any city worldwide.",
   },
   {
     question: "How often is the data updated?",
