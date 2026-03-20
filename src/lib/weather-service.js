@@ -49,6 +49,25 @@ function formatLocalDate(timestampInSeconds, timezoneOffsetInSeconds, options) {
   }).format(getLocalDate(timestampInSeconds, timezoneOffsetInSeconds));
 }
 
+function formatLocalTime(timestampInSeconds, timezoneOffsetInSeconds) {
+  return formatLocalDate(timestampInSeconds, timezoneOffsetInSeconds, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function formatVisibility(visibilityInMeters = 0) {
+  return `${(visibilityInMeters / 1000).toFixed(1)} km`;
+}
+
+function getWindDirectionLabel(degrees = 0) {
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+  const normalizedDegrees = ((degrees % 360) + 360) % 360;
+  const index = Math.round(normalizedDegrees / 45) % directions.length;
+
+  return directions[index];
+}
+
 /**
  * Find city coordinates using OpenWeather Geocoding API
  */
@@ -113,9 +132,14 @@ export async function fetchCurrentWeather(location, envVar = process.env) {
     apparentTemperature: Math.round(data.main.feels_like),
     windSpeed: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
     humidity: data.main.humidity,
+    pressure: data.main.pressure,
+    visibility: formatVisibility(data.visibility),
     condition: data.weather[0]?.main || "Unknown",
     high: Math.round(data.main.temp_max),
     low: Math.round(data.main.temp_min),
+    windDirection: getWindDirectionLabel(data.wind.deg),
+    sunrise: formatLocalTime(data.sys.sunrise, data.timezone),
+    sunset: formatLocalTime(data.sys.sunset, data.timezone),
     timezone: formatUtcOffset(data.timezone),
   };
 }
@@ -137,7 +161,6 @@ export async function fetchFiveDayForecast(location, envVar = process.env) {
 
   const data = await fetchJson(url.toString());
   const timezoneOffset = data.city?.timezone ?? 0;
-
   const entries = (data.list ?? []).map((item) => {
     const weather = item.weather?.[0] ?? {};
 
@@ -161,7 +184,10 @@ export async function fetchFiveDayForecast(location, envVar = process.env) {
       temperature: Math.round(item.main.temp),
       feelsLike: Math.round(item.main.feels_like),
       humidity: item.main.humidity,
+      pressure: item.main.pressure,
+      visibility: formatVisibility(item.visibility),
       windSpeed: Math.round((item.wind?.speed ?? 0) * 3.6),
+      windDirection: getWindDirectionLabel(item.wind?.deg),
       precipitationChance: Math.round((item.pop ?? 0) * 100),
       rainVolume: Number((item.rain?.["3h"] ?? 0).toFixed(1)),
       snowVolume: Number((item.snow?.["3h"] ?? 0).toFixed(1)),
@@ -193,7 +219,10 @@ export async function fetchFiveDayForecast(location, envVar = process.env) {
             temperature: entry.temperature,
             feelsLike: entry.feelsLike,
             humidity: entry.humidity,
+            pressure: entry.pressure,
+            visibility: entry.visibility,
             windSpeed: entry.windSpeed,
+            windDirection: entry.windDirection,
             precipitationChance: entry.precipitationChance,
             rainVolume: entry.rainVolume,
             snowVolume: entry.snowVolume,
@@ -212,7 +241,10 @@ export async function fetchFiveDayForecast(location, envVar = process.env) {
       temperature: entry.temperature,
       feelsLike: entry.feelsLike,
       humidity: entry.humidity,
+      pressure: entry.pressure,
+      visibility: entry.visibility,
       windSpeed: entry.windSpeed,
+      windDirection: entry.windDirection,
       precipitationChance: entry.precipitationChance,
       rainVolume: entry.rainVolume,
       snowVolume: entry.snowVolume,

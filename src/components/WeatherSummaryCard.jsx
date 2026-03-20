@@ -1,10 +1,15 @@
 import {
+  IconEye,
   IconDroplets,
   IconWind,
   IconMapPin,
   IconTemperaturePlus,
   IconTemperatureMinus,
   IconClock,
+  IconSunrise,
+  IconSunset,
+  IconGauge,
+  IconNavigation,
 } from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -61,7 +66,7 @@ export function WeatherSummaryCard({ weather }) {
         <div className="my-6 h-px bg-border" />
 
         {/* Bottom Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 text-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-muted-foreground">
               <IconDroplets className="size-4 text-primary" />
@@ -79,6 +84,56 @@ export function WeatherSummaryCard({ weather }) {
             </div>
             <span className="font-medium text-foreground">
               {weather.windSpeed} km/h
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconNavigation className="size-4 text-primary" />
+              Wind direction
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.windDirection}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconEye className="size-4 text-primary" />
+              Visibility
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.visibility}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconGauge className="size-4 text-primary" />
+              Pressure
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.pressure} hPa
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconSunrise className="size-4 text-primary" />
+              Sunrise
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.sunrise}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconSunset className="size-4 text-primary" />
+              Sunset
+            </div>
+            <span className="font-medium text-foreground">
+              {weather.sunset}
             </span>
           </div>
 

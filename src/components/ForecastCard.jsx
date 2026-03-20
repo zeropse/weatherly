@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
-import { IconCloudRain, IconDroplets, IconWind } from "@tabler/icons-react";
+import {
+  IconCloudRain,
+  IconDroplets,
+  IconWind,
+  IconEye,
+  IconGauge,
+  IconNavigation,
+} from "@tabler/icons-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -102,7 +109,9 @@ export function ForecastCard({ forecast }) {
                 </div>
 
                 <div className="text-right text-xs text-muted-foreground">
-                  <div>Wind {entry.windSpeed} km/h</div>
+                  <div>
+                    Wind {entry.windSpeed} km/h {entry.windDirection}
+                  </div>
                   <div>
                     Volume{" "}
                     {entry.rainVolume || entry.snowVolume
@@ -130,6 +139,36 @@ export function ForecastCard({ forecast }) {
                   </span>
                   <span className="font-medium text-foreground">
                     {entry.windSpeed} km/h
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <IconNavigation className="size-4 text-primary" />
+                    Wind direction
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {entry.windDirection}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <IconEye className="size-4 text-primary" />
+                    Visibility
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {entry.visibility}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <IconGauge className="size-4 text-primary" />
+                    Pressure
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {entry.pressure} hPa
                   </span>
                 </div>
 

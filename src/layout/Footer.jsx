@@ -28,7 +28,7 @@ export default function Footer() {
     <footer className="border-t">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 p-4 text-sm text-muted-foreground md:flex-row">
         <p className="text-center md:text-left">
-          © {new Date().getFullYear()} Weatherly
+          © {new Date().getFullYear()} Weatherly.
         </p>
 
         <div className="flex items-center gap-2">

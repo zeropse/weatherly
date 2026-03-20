@@ -25,7 +25,7 @@ const faqData = [
   {
     question: "How accurate is the weather data?",
     answer:
-      "We use industry-standard APIs that combine data from global and local weather stations. While no forecast is 100% certain, we strive to provide the most reliable and up-to-date information available.",
+      "We directly use open weather APIs that are widely recognized for their accuracy and reliability. While no forecast can be 100% precise due to the nature of weather, we strive to provide the most up-to-date and accurate information available.",
   },
   {
     question: "Is Weatherly free to use?",
@@ -41,6 +41,41 @@ const faqData = [
     question: "How often is the data updated?",
     answer:
       "Our weather data is refreshed in real-time. Whenever you search for a city or refresh the page, we fetch the latest available observations and forecasts.",
+  },
+  {
+    question: "What kind of forecast does Weatherly show?",
+    answer:
+      "Weatherly currently highlights live conditions plus a 5-day forecast broken into 3-hour steps. That makes it useful for checking not just the day overall, but also how conditions change from morning to evening.",
+  },
+  {
+    question: "Which weather details are included?",
+    answer:
+      "Depending on the view, you can see temperature, feels-like temperature, humidity, wind speed, wind direction, pressure, visibility, sunrise, sunset, and precipitation chance. We focus on the details that are most helpful at a glance.",
+  },
+  {
+    question: "Why can two cities with similar names return different results?",
+    answer:
+      "City searches are resolved through geocoding, which maps your typed location to latitude and longitude. If multiple places share the same name, the result depends on the best match returned by the provider, so using a more specific query can help.",
+  },
+  {
+    question: "Does Weatherly work well on mobile?",
+    answer:
+      "Yes. The interface is designed to adapt across phones, tablets, and desktop screens. Forecast details stack more compactly on smaller devices so the key information stays readable.",
+  },
+  {
+    question: "Can I use Weatherly to compare travel destinations?",
+    answer:
+      "Absolutely. Weatherly is well-suited for quickly comparing cities by current conditions, daily ranges, and 3-hour forecast details so you can get a feel for what the weather will actually be like during the day.",
+  },
+  {
+    question: "Does Weatherly store my searches?",
+    answer:
+      "Searches are reflected in the page URL so views can be revisited or shared, but the app does not currently provide a full saved-favorites system. That keeps the experience lightweight while still making searches easy to revisit.",
+  },
+  {
+    question: "Why might the weather differ from what I see outside?",
+    answer:
+      "Forecasts and observations come from trusted weather sources, but actual conditions can still vary because of rapid local changes, terrain, nearby water, or timing differences between observations and what is happening at your exact location.",
   },
   {
     question: "How can I report a bug or suggest a feature?",
