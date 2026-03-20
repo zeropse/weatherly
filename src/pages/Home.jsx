@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchCityWeather } from "@/lib/weather";
 import { WeatherSummaryCard } from "@/components/WeatherSummaryCard";
@@ -23,18 +23,7 @@ export default function Home() {
   const [searchError, setSearchError] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
-  useEffect(() => {
-    if (queryCity) {
-      setCity(queryCity);
-      handleSearch(queryCity);
-    } else {
-      setCity("");
-      setSearchedWeather(null);
-      setSearchError("");
-    }
-  }, [queryCity]);
-
-  async function handleSearch(cityName) {
+  const handleSearch = useCallback(async (cityName) => {
     const nextCity = cityName.trim();
 
     if (!nextCity) {
@@ -54,7 +43,18 @@ export default function Home() {
     } finally {
       setIsSearching(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    if (queryCity) {
+      setCity(queryCity);
+      handleSearch(queryCity);
+    } else {
+      setCity("");
+      setSearchedWeather(null);
+      setSearchError("");
+    }
+  }, [queryCity, handleSearch]);
 
   async function handleSubmit(event) {
     event.preventDefault();

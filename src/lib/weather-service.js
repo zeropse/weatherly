@@ -30,12 +30,12 @@ async function fetchJson(url) {
 }
 
 function formatUtcOffset(offsetInSeconds) {
-  const offsetInHours = offsetInSeconds / 3600;
-  const formattedOffset = Number.isInteger(offsetInHours)
-    ? offsetInHours.toString()
-    : offsetInHours.toFixed(1).replace(/\.0$/, "");
+  const sign = offsetInSeconds >= 0 ? "+" : "-";
+  const absoluteOffsetInSeconds = Math.abs(offsetInSeconds);
+  const hours = Math.floor(absoluteOffsetInSeconds / 3600);
+  const minutes = Math.floor((absoluteOffsetInSeconds % 3600) / 60);
 
-  return `UTC${offsetInHours >= 0 ? "+" : ""}${formattedOffset}`;
+  return `UTC${sign}${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
 function getLocalDate(timestampInSeconds, timezoneOffsetInSeconds) {
