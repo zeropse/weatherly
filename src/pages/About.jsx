@@ -92,7 +92,7 @@ const About = () => {
     <section className="flex-1 flex flex-col items-center justify-center min-h-[70vh] py-12 px-4 md:px-6">
       <div className="w-full max-w-5xl mx-auto">
         <Card className="w-full border-none shadow-none bg-transparent md:border md:shadow-sm">
-          <CardHeader>
+          <CardHeader className={"p-3"}>
             <CardTitle className="text-4xl md:text-5xl font-extrabold text-center drop-shadow-sm">
               About
             </CardTitle>
@@ -101,7 +101,7 @@ const About = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Accordion type="multiple" className="w-full z-20 md:p-5">
+            <Accordion type="multiple" className="w-full z-20 md:p-5 gap-3">
               {faqData.map((faq, idx) => (
                 <AccordionItem value={`faq-${idx}`} key={idx}>
                   <AccordionTrigger className="text-left text-lg font-medium hover:cursor-pointer">
